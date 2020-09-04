@@ -4,8 +4,10 @@ import com.vaadin.tutorial.crm.backend.repository.CompanyRepository;
 import com.vaadin.tutorial.crm.backend.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.lang.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 @Service 
 public class ContactService {
   private static final Logger LOGGER = Logger.getLogger(ContactService.class
@@ -32,7 +34,7 @@ companyRepository) {
   return;
   }
 
-  
+
   contactRepository.save(contact);
   }
 }
