@@ -31,6 +31,8 @@ companyRepository) {
   if (contact == null) {   LOGGER.log(Level.SEVERE,  "Contact is null. Are you sure you have connected your form to the application?");
   return;
   }
+
+  
   contactRepository.save(contact);
   }
 }
