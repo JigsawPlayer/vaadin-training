@@ -1,22 +1,31 @@
 package com.vaadin.tutorial.crm.backend.service;
+import java.util.stream.Collectors; 
+import com.vaadin.tutorial.crm.backend.entity.Company;
 import com.vaadin.tutorial.crm.backend.entity.Contact;
 import com.vaadin.tutorial.crm.backend.repository.CompanyRepository;
 import com.vaadin.tutorial.crm.backend.repository.ContactRepository;
+import java.util.stream.Stream; 
+
 import org.springframework.stereotype.Service;
+//import org.apache.commons.lang3.Streams;
+import org.springframework.stereotype.*;
+
 import java.util.List;
-import java.lang.*;
+import java.util.Random;
 import java.util.logging.Level;
+import javax.annotation.PostConstruct;
+
 import java.util.logging.Logger;
+
+//import javax.annotation.PostConstruct;
 
 @Service 
 public class ContactService {
-  private static final Logger LOGGER = Logger.getLogger(ContactService.class
-.getName());
+  private static final Logger LOGGER = Logger.getLogger(ContactService.class.getName());
   private ContactRepository contactRepository;
   private CompanyRepository companyRepository;
   public ContactService(ContactRepository contactRepository,
-  CompanyRepository
-companyRepository) { 
+  CompanyRepository companyRepository) { 
   this.contactRepository = contactRepository;
   this.companyRepository = companyRepository;
   }
@@ -40,14 +49,12 @@ companyRepository) {
   @PostConstruct 
 public void populateTestData() {
   if (companyRepository.count() == 0) {
-  companyRepository.saveAll( 
-  Stream.of("Path-Way Electronics", "E-Tech Management", "Path-E-TechManagement")  .map(Company::new)  .collect(Collectors.toList()));
+  companyRepository.saveAll(Stream.of("Path-Way Electronics", "E-Tech Management", "Path-E-TechManagement")  .map(Company::new)  .collect(Collectors.toList()));
   }
   if (contactRepository.count() == 0) {
   Random r = new Random(0);
   List<Company> companies = companyRepository.findAll();
-  contactRepository.saveAll( 
-  Stream.of("Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",  "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",   "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",   "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",   "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson ", "Lara Martin",  "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",   "Jaydan Jackson", "Bernard Nilsen").map(name -> {
+  contactRepository.saveAll(  Stream.of("Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",  "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",   "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",   "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",   "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson ", "Lara Martin",  "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",   "Jaydan Jackson", "Bernard Nilsen").map(name -> {
   String[] split = name.split(" ");
   Contact contact = new Contact();
   contact.setFirstName(split[0]);
