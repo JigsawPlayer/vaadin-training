@@ -80,6 +80,7 @@ $_documentContainer.innerHTML = `
       .highcharts-column-series rect.highcharts-point {
         stroke: var(--lumo-base-color);
       }
+      
     </style>
   </template>
 </dom-module>`;
