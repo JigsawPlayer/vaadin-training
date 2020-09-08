@@ -10,32 +10,38 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.backend.entity.Company;
 import com.vaadin.tutorial.crm.backend.entity.Contact;
 import com.vaadin.tutorial.crm.backend.service.ContactService;
-import org.hibernate.dialect.lock.UpdateLockingStrategy;
 
 
 @Route("")
-//@CssImport("./frontend/styles/shared-styles.css")
+@CssImport("./styles/views/main/main-view.css")
 public class MainView extends VerticalLayout {
-    private ContactService contactService;
-    private Grid<Contact> grid=new Grid<>(Contact.class);
-    private TextField filterText=new TextField();
-    private ContactForm form;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 488818528642311180L;
+      private ContactService contactService;
+
+    private Grid<Contact> grid = new Grid<>(Contact.class);
+    private TextField filterText = new TextField();
+    private ContactForm form;  
+
     public MainView(ContactService contactService) {
-        this.contactService=contactService;
+        this.contactService = contactService;
         addClassName("list-view");
         setSizeFull();
+
         configureGrid();
         configureFilter();
-        form = new ContactForm();
-        Div content = new Div(grid,form);
+
+        form = new ContactForm(); 
+
+        Div content = new Div(grid, form); 
         content.addClassName("content");
         content.setSizeFull();
 
-        
-
-
-        add(filterText, content);
+        add(filterText, content); 
         updateList();
+
     }
     private void configureGrid(){
         grid.addClassName("contact-grid");
