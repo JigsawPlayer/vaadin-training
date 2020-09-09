@@ -9,6 +9,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.backend.entity.Company;
 import com.vaadin.tutorial.crm.backend.entity.Contact;
+import com.vaadin.tutorial.crm.backend.service.CompanyService;
 import com.vaadin.tutorial.crm.backend.service.ContactService;
 
 
@@ -25,7 +26,8 @@ public class MainView extends VerticalLayout {
     private TextField filterText = new TextField();
     private ContactForm form;  
 
-    public MainView(ContactService contactService) {
+    public MainView(ContactService contactService,
+  CompanyService companyService) {
         this.contactService = contactService;
         addClassName("list-view");
         setSizeFull();
@@ -33,7 +35,7 @@ public class MainView extends VerticalLayout {
         configureGrid();
         configureFilter();
 
-        form = new ContactForm(); 
+        form = new ContactForm(companyService.findAll()); 
 
         Div content = new Div(grid, form); 
         content.addClassName("content");
@@ -41,6 +43,7 @@ public class MainView extends VerticalLayout {
 
         add(filterText, content); 
         updateList();
+        closeEditor();
 
     }
     private void configureGrid(){
@@ -53,7 +56,24 @@ public class MainView extends VerticalLayout {
   return company == null ? "-" : company.getName();
   }).setHeader("Company");
   grid.getColumns().forEach(col -> col.setAutoWidth(true));
+  grid.asSingleSelect().addValueChangeListener(event -> 
+  editContact(event.getValue()));
+
     }
+    public void editContact(Contact contact) { 
+  if (contact == null) {
+  closeEditor();
+  } else {
+  form.setContact(contact);
+  form.setVisible(true);
+  addClassName("editing");
+  }
+}
+private void closeEditor() {
+  form.setContact(null);
+  form.setVisible(false);
+  removeClassName("editing");
+}
     private void configureFilter(){
         filterText.setPlaceholder("Filter by name...");
         filterText.setClearButtonVisible(true);
@@ -65,5 +85,4 @@ public class MainView extends VerticalLayout {
     private void updateList() {
   grid.setItems(contactService.findAll(filterText.getValue()));
 }
-
 }
