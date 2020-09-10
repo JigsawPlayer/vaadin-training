@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.ValidationException;
 
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,6 +18,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 //import com.vaadin.flow.data.binder.Binder;
 //import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.shared.Registration;
 //import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.tutorial.crm.backend.entity.Company;
 import com.vaadin.tutorial.crm.backend.entity.Contact;
@@ -85,5 +88,44 @@ public ContactForm(List<Company> companies) {
   this.contact = contact; 
   binder.readBean(contact); 
   }
-}
+
+
 // Events
+public abstract class ContactFormEvent extends ComponentEvent<ContactForm> {
+    /**
+     *
+     */
+    
+    private final Contact contact;
+
+    protected ContactFormEvent(final ContactForm source, final Contact contact) {
+        super(source, false);
+        this.contact = contact;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+}
+
+public class SaveEvent extends ContactFormEvent {
+  SaveEvent(ContactForm source, Contact contact) {
+  super(source, contact);
+  }
+}
+public  class CloseEvent extends ContactFormEvent {
+  CloseEvent(ContactForm source) {
+  super(source, null);
+  }
+}
+public  class DeleteEvent extends ContactFormEvent {
+  DeleteEvent(ContactForm source, Contact contact) {
+  super(source, contact);
+  }
+}
+ public <T extends ComponentEvent<?>> Registration addListener(final Class<T> eventType,  final ComponentEventListener<T> listener) { 
+  return getEventBus().addListener(eventType, listener);
+}
+
+}
